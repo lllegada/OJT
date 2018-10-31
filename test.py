@@ -31,18 +31,19 @@ def resize_image(nimage, image):
 	
 
 def otsu_preprocess(image, new_img):
+	# gray = cv2.GaussianBlur(gray, (3,3), 0)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 	prepimage = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 	
-	nimage, image = resize_image(prepimage, new_img)
+	# nimage, image = resize_image(prepimage, new_img)
 	
 	cv2.imshow("orig", image)
-	cv2.imshow("OTSU", nimage)
+	cv2.imshow("OTSU", prepimage)
 
 	cv2.waitKey(2000)
-	_, contours, hierarchy = cv2.findContours(nimage, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+	# _, contours, hierarchy = cv2.findContours(new_img, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 	
-	return nimage
+	return prepimage
 
 def extract_text(image_pil):
 	image_pil = Image.open(image_pil)
@@ -84,18 +85,27 @@ if __name__ == '__main__':
 			# check if image is grayscale, if true extract text
 			# # else, preprocess image
 			# if not is_gray_scale(image_path):
+				# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+				# image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+				# image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
+		
+			# image = otsu_preprocess(image, image)	
+			
+			# image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+			# image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
+
+			# image = cv2.resize(image, None, fx = 2, fy = 2, interpolation = cv2.INTER_CUBIC)
+
+
 			# 	print(" Image is not grayscale")
 			# 	new_img = image
 			# 	# image = remove_watermark(image)
-			# 	otsu_preprocess(image, image)	
 			# 	image = cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7,21)
 
 			# else:
 			# 	image = cv2.fastNlMeansDenoising(image, None, 10, 10, 7,21)
 
 			# ====== option 1: ============
-			image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
-			image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
 			
 			# cv2.imshow("img",image)
 			# cv2.waitKey(2000)
